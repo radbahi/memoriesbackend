@@ -33,7 +33,6 @@ const Form = ({ currentId, setCurrentId }) => {
     } else {
       dispatch(createPost(currentId, postData));
     }
-    dispatch(createPost(postData));
   };
 
   const clear = () => {};
