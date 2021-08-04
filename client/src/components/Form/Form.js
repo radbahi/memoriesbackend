@@ -28,16 +28,16 @@ const Form = ({ currentId, setCurrentId }) => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (currentId === 0) {
-      dispatch(createPost(postData));
-    } else {
+    if (currentId) {
       dispatch(updatePost(currentId, postData));
+    } else {
+      dispatch(createPost(currentId, postData));
     }
     clear();
   };
 
   const clear = () => {
-    setCurrentId(0);
+    setCurrentId(null);
     setPostData({
       creator: "",
       title: "",
@@ -56,7 +56,7 @@ const Form = ({ currentId, setCurrentId }) => {
         onSubmit={handleSubmit}
       >
         <Typography variant="h6">
-          {currentId !== 0 ? "Editing" : "Creating"} a Memory
+          {currentId ? "Editing" : "Creating"} a Memory
         </Typography>
         <TextField
           name="creator"
