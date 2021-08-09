@@ -49,7 +49,7 @@ export const updatePost = async (req, res) => {
 };
 
 export const deletePost = async (req, res) => {
-  const { id } = req.params; //deconstructs and renames id to _id
+  const { id } = req.params;
 
   if (!mongoose.Types.ObjectId.isValid(id))
     return res.status(404).send("No post with that ID");
@@ -57,4 +57,23 @@ export const deletePost = async (req, res) => {
   await PostMessage.findByIdAndRemove(id);
 
   res.json({ message: "Post deleted" });
+};
+
+export const likePost = async (req, res) => {
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id))
+    return res.status(404).send("No post with that ID");
+
+  const post = await PostMessage.findById(id);
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(
+    id,
+    {
+      likeCount: post.likeCount + 1,
+    },
+    { new: true } // why do we do this?
+  );
+
+  res.json(updatedPost);
 };
