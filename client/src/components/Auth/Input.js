@@ -5,7 +5,6 @@ import VisibilityOff from "@material-ui/icons/VisibilityOff";
 
 const Input = ({
   name,
-  half,
   handleChange,
   label,
   half,
