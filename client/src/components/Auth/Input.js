@@ -25,15 +25,17 @@ const Input = ({
         type={type}
         //InputProps is to show an icon for showpassword. the input textield must have the name as password in order to show it
         InputProps={
-          name === "password" && {
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={handleShowPassword}>
-                  {type === "password" ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }
+          name === "password"
+            ? {
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton onClick={handleShowPassword}>
+                      {type === "password" ? <Visibility /> : <VisibilityOff />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }
+            : null
         }
       />
     </Grid>
