@@ -8,26 +8,47 @@ import {
   Container,
 } from "@material-ui/core";
 import { GoogleLogin } from "react-google-login";
+import { useDispatch } from "react-redux";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Input from "./Input";
 import Icon from "./Icon";
 import useStyles from "./styles";
+import { useHistory } from "react-router";
 
 const Auth = () => {
   const [showPassword, setShowPassword] = useState(false);
+
   const [isSignup, setIsSignup] = useState(false);
 
+  const dispatch = useDispatch();
+
   const classes = useStyles();
+
+  const history = useHistory();
+
   const handleSubmit = () => {};
+
   const handleChange = () => {};
+
   const handleShowPassword = () =>
     setShowPassword((prevShowPassword) => !prevShowPassword);
+
   const switchMode = () => {
     setIsSignup((prevSignup) => !prevSignup);
     handleShowPassword(false);
   };
+
   const googleSuccess = async (res) => {
-    console.log(res);
+    //the ? optional chaining makes it so it doesnt throw an error if res is undefined
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+
+    try {
+      dispatch({ type: "AUTH", data: { result, token } });
+      history.push("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
   const googleFailure = (error) => {
     console.log(error);
