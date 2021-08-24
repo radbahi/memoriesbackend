@@ -56,7 +56,7 @@ export const signup = async (req, res) => {
       expiresIn: "1h",
     }); // the 'test' is a secret that is usually is an env file
 
-    res.status(200).json({ result: result, token });
+    res.status(201).json({ result: result, token });
   } catch (error) {
     res.status(500).json({ message: `Something went wrong: ${error}` });
   }
