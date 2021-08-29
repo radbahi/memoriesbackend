@@ -60,10 +60,12 @@ export const deletePost = async (req, res) => {
 export const likePost = async (req, res) => {
   const { id } = req.params;
 
-  if (!req.userId) return res.json({ message: "Unauthenticated" });
+  if (!req.userId) {
+    return res.json({ message: "Unauthenticated" });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(id))
-    return res.status(404).send("No post with that ID");
+    return res.status(404).send(`No post with id: ${id}`);
 
   const post = await PostMessage.findById(id);
 
@@ -75,12 +77,34 @@ export const likePost = async (req, res) => {
   } else {
     post.likes = post.likes.filter((id) => id !== String(req.userId));
   }
-
-  const updatedPost = await PostMessage.findByIdAndUpdate(
-    id,
-    post,
-    { new: true } // why do we do this?
-  );
-
-  res.json(updatedPost);
+  const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+    new: true,
+  });
+  res.status(200).json(updatedPost);
 };
+
+// export const likePost = async (req, res) => {
+//   const { id } = req.params;
+
+//   if (!mongoose.Types.ObjectId.isValid(id))
+//     return res.status(404).send("No post with that ID");
+
+//   const post = await PostMessage.findById(id);
+
+//   const index = post.likes.findIndex((id) => id === String(req.userId));
+
+//   if (index === -1) {
+//     // the -1 means the current id is not in that array of likes, so this is to push that id into that array of likes
+//     post.likes.push(req.userId);
+//   } else {
+//     post.likes = post.likes.filter((id) => id !== String(req.userId));
+//   }
+
+//   const updatedPost = await PostMessage.findByIdAndUpdate(
+//     id,
+//     post,
+//     { new: true } // why do we do this?
+//   );
+
+//   res.json(updatedPost);
+// };
