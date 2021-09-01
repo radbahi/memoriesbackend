@@ -11,6 +11,22 @@ export const getPosts = async (req, res) => {
   }
 };
 
+export const getPostsBySearch = async (req, res) => {
+  const { searchQuery, tags } = req.query;
+  try {
+    const title = new RegExp(searchQuery, "i"); //i flag searches for the query no matter its format
+
+    //$or flag finds either/or the title, tags. $in searches for the query IN the array of tags
+    const posts = await PostMessage.find({
+      $or: [{ title }, { tags: { $in: tags.split(",") } }],
+    });
+
+    res.status(200).json(posts);
+  } catch (error) {
+    res.status(404).json({ message: error });
+  }
+};
+
 export const createPost = async (req, res) => {
   const post = req.body;
   const newPost = new PostMessage({
