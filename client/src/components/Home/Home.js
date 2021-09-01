@@ -8,13 +8,12 @@ import {
   TextField,
   Button,
 } from "@material-ui/core";
-import { WithContext as ReactTags } from "react-tag-input";
 import Pagination from "../Pagination/Pagination";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router";
-import { getPosts } from "../../actions/posts";
+import { getPosts, getPostsBySearch } from "../../actions/posts";
 import useStyles from "./styles";
 import "./tagstyle.css";
 
@@ -40,24 +39,20 @@ const Home = () => {
     dispatch(getPosts());
   }, [currentId, dispatch]);
 
-  const handleKeyPress = (e) => {
-    //keyCode 13 is the enter key
-    if (e.keyCode === 13) {
-      //search for post
+  const searchPost = () => {
+    if (search.trim() || tags) {
+      dispatch(getPostsBySearch({ search, tags: tags.join(",") })); // we use .join because we cant pass an array as a search param
+    } else {
+      history.push("/");
     }
   };
 
-  // const handleAdd = (tag) => {
-  //   setTags([...tags, tag]);
-  //   console.log(`added ${tag}`);
-  //   console.log(tags);
-  // };
-
-  // const handleDelete = (tagToDelete) => {
-  //   setTags(tags.filter((tag) => tag !== tagToDelete));
-  //   console.log(`deleted ${tagToDelete}`);
-  //   console.log(tags);
-  // };
+  const handleKeyPress = (e) => {
+    //keyCode 13 is the enter key
+    if (e.keyCode === 13) {
+      searchPost();
+    }
+  };
 
   const onChange = (e) => {
     const { value } = e.target;
@@ -132,7 +127,7 @@ const Home = () => {
                   setSearch(e.target.value);
                 }}
               />
-              <div className="container">
+              <div className="tag-container">
                 {tags.map((tag, index) => (
                   <div className="tag">
                     {tag}
@@ -147,6 +142,14 @@ const Home = () => {
                   onChange={onChange}
                 />
               </div>
+              <Button
+                onClick={searchPost}
+                className={classes.searchButton}
+                color="primary"
+                variant="contained"
+              >
+                Search
+              </Button>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>

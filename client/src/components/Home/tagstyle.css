@@ -1,4 +1,4 @@
-.container {
+.tag-container {
   display: flex;
   overflow: scroll;
   width: 100%;
@@ -8,7 +8,7 @@
   color: black;
 }
 
-.container input {
+.tag-container input {
   width: 100%;
   min-width: 50%;
   border: none;
