@@ -7,8 +7,8 @@ import {
   AppBar,
   TextField,
   Button,
-  Chip,
 } from "@material-ui/core";
+import { WithContext as ReactTags } from "react-tag-input";
 import Pagination from "../Pagination/Pagination";
 import Posts from "../Posts/Posts";
 import Form from "../Form/Form";
@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router";
 import { getPosts } from "../../actions/posts";
 import useStyles from "./styles";
+import "./tagstyle.css";
 
 function useQuery() {
   //sets up url search params
@@ -31,7 +32,9 @@ const Home = () => {
   const searchQuery = query.get("searchQuery");
   const classes = useStyles();
   const [search, setSearch] = useState("");
+  const [tagInput, setTagInput] = useState("");
   const [tags, setTags] = useState([]);
+  const [isKeyReleased, setIsKeyReleased] = useState(false);
 
   useEffect(() => {
     dispatch(getPosts());
@@ -44,10 +47,60 @@ const Home = () => {
     }
   };
 
-  const handleAdd = (tag) => setTags([...tags, tag]);
+  // const handleAdd = (tag) => {
+  //   setTags([...tags, tag]);
+  //   console.log(`added ${tag}`);
+  //   console.log(tags);
+  // };
 
-  const handleDelete = (tagToDelete) =>
-    setTags(tags.filter((tag) => tag !== tagToDelete));
+  // const handleDelete = (tagToDelete) => {
+  //   setTags(tags.filter((tag) => tag !== tagToDelete));
+  //   console.log(`deleted ${tagToDelete}`);
+  //   console.log(tags);
+  // };
+
+  const onChange = (e) => {
+    const { value } = e.target;
+    setTagInput(value);
+  };
+
+  const deleteTag = (index) => {
+    setTags((prevState) => prevState.filter((tag, i) => i !== index));
+  };
+
+  const onKeyDown = (e) => {
+    const { key } = e;
+    const trimmedInput = tagInput.trim();
+
+    if (
+      key === "Enter" &&
+      trimmedInput.length &&
+      !tags.includes(trimmedInput)
+    ) {
+      e.preventDefault();
+      setTags((prevState) => [...prevState, trimmedInput]);
+      setTagInput("");
+    }
+
+    if (
+      key === "Backspace" &&
+      !tagInput.length &&
+      tags.length &&
+      isKeyReleased
+    ) {
+      const tagsCopy = [...tags];
+      const poppedTag = tagsCopy.pop();
+      e.preventDefault();
+      setTags(tagsCopy);
+      setTagInput(poppedTag);
+    }
+
+    setIsKeyReleased(false);
+  };
+
+  const onKeyUp = () => {
+    setIsKeyReleased(true);
+  };
 
   return (
     <Grow in>
@@ -79,14 +132,21 @@ const Home = () => {
                   setSearch(e.target.value);
                 }}
               />
-              <Chip
-                style={{ margin: "10px 0" }}
-                value={tags}
-                // onAdd={handleAdd}
-                onDelete={handleDelete}
-                label="Search Tags"
-                variant="outlined"
-              />
+              <div className="container">
+                {tags.map((tag, index) => (
+                  <div className="tag">
+                    {tag}
+                    <button onClick={() => deleteTag(index)}>X</button>
+                  </div>
+                ))}
+                <input
+                  value={tagInput}
+                  placeholder="Enter a tag"
+                  onKeyDown={onKeyDown}
+                  onKeyUp={onKeyUp}
+                  onChange={onChange}
+                />
+              </div>
             </AppBar>
             <Form currentId={currentId} setCurrentId={setCurrentId} />
             <Paper elevation={6}>
