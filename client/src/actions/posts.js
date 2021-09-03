@@ -3,6 +3,7 @@ import * as api from "../api"; //import * imports everything
 export const getPosts = (page) => async (dispatch) => {
   //now starts accepting params from pagination
   try {
+    dispatch({ type: "START_LOADING" });
     const { data } = await api.fetchPosts(page);
     console.log(data);
     dispatch({ type: "FETCH_ALL", payload: data });
