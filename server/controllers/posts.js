@@ -33,7 +33,7 @@ export const getPost = async (req, res) => {
 
     res.status(200).json(post);
   } catch (error) {
-    res.status(404).json({ message: error.message });
+    res.status(404).json({ message: error });
   }
 };
 

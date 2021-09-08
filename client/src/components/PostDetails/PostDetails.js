@@ -8,7 +8,6 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import moment from "moment";
 import { useParams, useHistory } from "react-router-dom";
-
 import { getPost, getPostsBySearch } from "../../actions/posts";
 import useStyles from "./styles";
 
@@ -21,7 +20,7 @@ const Post = () => {
 
   useEffect(() => {
     dispatch(getPost(id));
-  }, [id]);
+  }, [id, dispatch]);
 
   useEffect(() => {
     if (post) {
@@ -29,19 +28,19 @@ const Post = () => {
         getPostsBySearch({ search: "none", tags: post?.tags.join(",") })
       );
     }
-  }, [post]);
+  }, [post, dispatch]);
 
   if (!post) return null;
 
   const openPost = (_id) => history.push(`/posts/${_id}`);
 
-  if (isLoading) {
-    return (
-      <Paper elevation={6} className={classes.loadingPaper}>
-        <CircularProgress size="7em" />
-      </Paper>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <Paper elevation={6} className={classes.loadingPaper}>
+  //       <CircularProgress size="7em" />
+  //     </Paper>
+  //   );
+  // }
 
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
