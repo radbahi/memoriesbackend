@@ -12,9 +12,11 @@ import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
+// /posts is used in the server index.js
 router.get("/", getPosts);
 router.get("/:id", getPost);
 router.get("/search", getPostsBySearch);
+
 router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
 router.patch("/:id/likePost", auth, likePost);

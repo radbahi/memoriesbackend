@@ -1,5 +1,8 @@
 import mongoose from "mongoose";
+import express from "express";
 import PostMessage from "../models/postMessage.js";
+
+const router = express.Router();
 
 export const getPosts = async (req, res) => {
   const { page } = req.query;
@@ -39,6 +42,7 @@ export const getPost = async (req, res) => {
 
 export const getPostsBySearch = async (req, res) => {
   const { searchQuery, tags } = req.query;
+  console.log(searchQuery, tags);
   try {
     const title = new RegExp(searchQuery, "i"); //i flag searches for the query no matter its format
 
@@ -122,6 +126,8 @@ export const likePost = async (req, res) => {
   });
   res.status(200).json(updatedPost);
 };
+
+export default router;
 
 // export const likePost = async (req, res) => {
 //   const { id } = req.params;
