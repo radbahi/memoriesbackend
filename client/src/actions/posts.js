@@ -10,6 +10,7 @@ export const getPost = (id) => async (dispatch) => {
     dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error);
+    dispatch({ type: "END_LOADING" });
   }
 };
 
@@ -22,11 +23,13 @@ export const getPosts = (page) => async (dispatch) => {
     dispatch({ type: "FETCH_ALL", payload: data });
     dispatch({ type: "END_LOADING" });
   } catch (error) {
-    console.log(error.message);
+    console.log(error);
+    dispatch({ type: "END_LOADING" });
   }
 };
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
+  console.log(searchQuery);
   try {
     dispatch({ type: "START_LOADING" });
 
@@ -36,6 +39,7 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error);
+    dispatch({ type: "END_LOADING" });
   }
 };
 
@@ -49,6 +53,7 @@ export const createPost = (post) => async (dispatch) => {
     dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error);
+    dispatch({ type: "END_LOADING" });
   }
 };
 

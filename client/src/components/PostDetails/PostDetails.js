@@ -34,13 +34,13 @@ const Post = () => {
 
   const openPost = (_id) => history.push(`/posts/${_id}`);
 
-  // if (isLoading) {
-  //   return (
-  //     <Paper elevation={6} className={classes.loadingPaper}>
-  //       <CircularProgress size="7em" />
-  //     </Paper>
-  //   );
-  // }
+  if (isLoading) {
+    return (
+      <Paper elevation={6} className={classes.loadingPaper}>
+        <CircularProgress size="7em" />
+      </Paper>
+    );
+  }
 
   const recommendedPosts = posts.filter(({ _id }) => _id !== post._id);
 
