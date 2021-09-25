@@ -14,8 +14,8 @@ const router = express.Router();
 
 // /posts is used in the server index.js
 router.get("/", getPosts);
-router.get("/:id", getPost);
 router.get("/search", getPostsBySearch);
+router.get("/:id", getPost);
 
 router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
