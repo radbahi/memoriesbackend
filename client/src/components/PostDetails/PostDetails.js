@@ -13,6 +13,7 @@ import useStyles from "./styles";
 
 const Post = () => {
   const { post, posts, isLoading } = useSelector((state) => state.posts);
+  console.log(posts, "posts here");
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
