@@ -13,6 +13,7 @@ import auth from "../middleware/auth.js";
 const router = express.Router();
 
 // /posts is used in the server index.js
+// remember that these have to be in order. /:id route was reading /search as an id because it was on top of it
 router.get("/", getPosts);
 router.get("/search", getPostsBySearch);
 router.get("/:id", getPost);
