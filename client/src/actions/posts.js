@@ -3,9 +3,7 @@ import * as api from "../api"; //import * imports everything
 export const getPost = (id) => async (dispatch) => {
   try {
     dispatch({ type: "START_LOADING" });
-
     const { data } = await api.fetchPost(id);
-
     dispatch({ type: "FETCH_POST", payload: { post: data } });
     dispatch({ type: "END_LOADING" });
   } catch (error) {
@@ -19,7 +17,6 @@ export const getPosts = (page) => async (dispatch) => {
   try {
     dispatch({ type: "START_LOADING" });
     const { data } = await api.fetchPosts(page);
-    console.log(data);
     dispatch({ type: "FETCH_ALL", payload: data });
     dispatch({ type: "END_LOADING" });
   } catch (error) {
@@ -29,13 +26,12 @@ export const getPosts = (page) => async (dispatch) => {
 };
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
-  console.log(searchQuery);
   try {
     dispatch({ type: "START_LOADING" });
-
     const { data } = await api.fetchPostsBySearch(searchQuery);
-    console.log(data);
     dispatch({ type: "FETCH_BY_SEARCH", payload: data });
+    console.log("search query", searchQuery);
+    console.log("payload", data);
     dispatch({ type: "END_LOADING" });
   } catch (error) {
     console.log(error);
@@ -46,9 +42,7 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
 export const createPost = (post) => async (dispatch) => {
   try {
     dispatch({ type: "START_LOADING" });
-
     const { data } = await api.createPost(post);
-
     dispatch({ type: "CREATE", payload: data });
     dispatch({ type: "END_LOADING" });
   } catch (error) {
