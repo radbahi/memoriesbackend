@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import FileBase from "react-file-base64";
 import { useDispatch, useSelector } from "react-redux";
 import { createPost, updatePost } from "../../actions/posts";
+import { useHistory } from "react-router-dom";
 
 const Form = ({ currentId, setCurrentId }) => {
   const [postData, setPostData] = useState({
@@ -20,6 +21,8 @@ const Form = ({ currentId, setCurrentId }) => {
   );
 
   const classes = useStyles();
+
+  const history = useHistory();
 
   const dispatch = useDispatch();
 
@@ -48,10 +51,13 @@ const Form = ({ currentId, setCurrentId }) => {
       );
     } else {
       dispatch(
-        createPost({
-          ...postData,
-          name: user?.result?.name,
-        })
+        createPost(
+          {
+            ...postData,
+            name: user?.result?.name,
+          },
+          history
+        )
       );
     }
     clear();
