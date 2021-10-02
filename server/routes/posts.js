@@ -7,6 +7,7 @@ import {
   deletePost,
   likePost,
   getPost,
+  commentPost,
 } from "../controllers/posts.js";
 import auth from "../middleware/auth.js";
 
@@ -21,6 +22,7 @@ router.get("/:id", getPost);
 router.post("/", auth, createPost);
 router.patch("/:id", auth, updatePost);
 router.patch("/:id/likePost", auth, likePost);
+router.post("/:id/commentPost", auth, commentPost);
 router.delete("/:id", auth, deletePost);
 
 export default router;

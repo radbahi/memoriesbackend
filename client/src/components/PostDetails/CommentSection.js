@@ -1,15 +1,20 @@
 import { useState, useRef } from "react";
 import { Typography, TextField, Button } from "@material-ui/core";
 import { useDispatch } from "react-redux";
+import { commentPost } from "../../actions/posts";
 import useStyles from "./styles";
 
 const CommentSection = ({ post }) => {
-  console.log(post);
+  const user = JSON.parse(localStorage.getItem("user"));
   const classes = useStyles();
   const [comments, setComments] = useState([1, 2, 3, 4]);
   const [comment, setComment] = useState("");
+  const dispatch = useDispatch();
 
-  const handleClick = () => {};
+  const handleClick = () => {
+    const finalComment = `${user.result.name}: ${comment}`;
+    dispatch(commentPost(finalComment, post._id));
+  };
 
   return (
     <div>
@@ -41,6 +46,7 @@ const CommentSection = ({ post }) => {
           style={{ marginTop: "10px" }}
           fullWidth
           disabled={!comment}
+          color="primary"
           variant="contained"
           onClick={handleClick}
         >
