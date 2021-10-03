@@ -126,30 +126,19 @@ export const likePost = async (req, res) => {
   res.status(200).json(updatedPost);
 };
 
+export const commentPost = async (req, res) => {
+  const { id } = req.params;
+  const { value } = req.body;
+
+  const post = await PostMessage.findById(id);
+
+  post.comments.push(value);
+
+  const updatedPost = await PostMessage.findByIdAndUpdate(id, post, {
+    new: true,
+  });
+
+  res.json(updatedPost);
+};
+
 export default router;
-
-// export const likePost = async (req, res) => {
-//   const { id } = req.params;
-
-//   if (!mongoose.Types.ObjectId.isValid(id))
-//     return res.status(404).send("No post with that ID");
-
-//   const post = await PostMessage.findById(id);
-
-//   const index = post.likes.findIndex((id) => id === String(req.userId));
-
-//   if (index === -1) {
-//     // the -1 means the current id is not in that array of likes, so this is to push that id into that array of likes
-//     post.likes.push(req.userId);
-//   } else {
-//     post.likes = post.likes.filter((id) => id !== String(req.userId));
-//   }
-
-//   const updatedPost = await PostMessage.findByIdAndUpdate(
-//     id,
-//     post,
-//     { new: true } // why do we do this?
-//   );
-
-//   res.json(updatedPost);
-// };
