@@ -7,54 +7,60 @@ import useStyles from "./styles";
 const CommentSection = ({ post }) => {
   const user = JSON.parse(localStorage.getItem("profile"));
   const classes = useStyles();
-  const [comments, setComments] = useState([1, 2, 3, 4]);
+  const [comments, setComments] = useState(post?.comments);
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
+  const commentsRef = useRef();
 
-  const handleClick = () => {
+  const handleClick = async () => {
     const finalComment = `${user.result.name}: ${comment}`;
-    dispatch(commentPost(finalComment, post._id));
+    const newComments = await dispatch(commentPost(finalComment, post._id));
+    setComments(newComments);
+    setComment("");
+
+    commentsRef.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
     <div>
-      <div className={classes.commentsOuterContainer}></div>
-      <div className={classes.commentsInnerContainer}>
-        <Typography gutterBottom variant="h6">
-          Comments
-        </Typography>
-        {comments.map((c, i) => (
-          <Typography key={i} gutterBottom variant="subtitle1">
-            Comment {i}
-          </Typography>
-        ))}
-      </div>
-      {user?.result?.name && (
-        <div style={{ width: "70%" }}>
-          <Typography gutterBottom variant="h6">
-            Write a comment
-          </Typography>
-          <TextField
-            fullWidth
-            rows={4}
-            variant="outlined"
-            label="Comment"
-            multiline
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <Button
-            style={{ marginTop: "10px" }}
-            fullWidth
-            disabled={!comment}
-            color="primary"
-            variant="contained"
-            onClick={handleClick}
-          >
-            Comment
-          </Button>
+      <div className={classes.commentsOuterContainer}>
+        <div className={classes.commentsInnerContainer}>
+          <Typography gutterBottom variant="h6"></Typography>
+          {comments.map((comment, i) => (
+            <Typography key={i} gutterBottom variant="subtitle1">
+              <strong>{comment.split(": ")[0]}</strong>
+              {comment.split(":")[1]}
+            </Typography>
+          ))}
+          <div ref={commentsRef} />
         </div>
-      )}
+        {user?.result?.name && (
+          <div style={{ width: "70%" }}>
+            <Typography gutterBottom variant="h6">
+              Write a comment
+            </Typography>
+            <TextField
+              fullWidth
+              rows={4}
+              variant="outlined"
+              label="Comment"
+              multiline
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
+            <Button
+              style={{ marginTop: "10px" }}
+              fullWidth
+              disabled={!comment}
+              color="primary"
+              variant="contained"
+              onClick={handleClick}
+            >
+              Comment
+            </Button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };
