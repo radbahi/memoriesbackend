@@ -100,6 +100,7 @@ const Post = () => {
                   onClick={() => openPost(_id)}
                   key={_id}
                 >
+                  {console.log(selectedFile)}
                   <Typography gutterBottom variant="h6">
                     {title}
                   </Typography>
@@ -112,7 +113,7 @@ const Post = () => {
                   <Typography gutterBottom variant="subtitle1">
                     Likes: {likes.length}
                   </Typography>
-                  <img src={selectedFile} width="200px" />
+                  <img alt="" src={selectedFile} width="200px" />
                 </div>
               )
             )}
