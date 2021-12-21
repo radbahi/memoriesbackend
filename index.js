@@ -18,6 +18,10 @@ app.use(cors()); //this has to be before any defined routes
 app.use("/posts", postRoutes);
 app.use("/user", userRoutes);
 
+app.get("/", (req, res) => {
+  res.send("APP IS RUNNING");
+});
+
 const CONNECTION_URL = process.env.MONGO_URL;
 const PORT = process.env.PORT || 5000;
 
